@@ -10,6 +10,8 @@ import math
 def index(request):
     return render(request, "index.html")
 
+def guia2(request):
+    return render(request, "guia2.html")
 # Api
 class DatosExcel(APIView):
     permission_classes = [AllowAny]

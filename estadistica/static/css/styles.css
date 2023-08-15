@@ -37,3 +37,21 @@ body {
     border: 2px solid #ffcc00;
     cursor: pointer;
 }
+
+.navbar-custom {
+    background-color: #3498db;
+}
+
+/* Estilos personalizados para el Navbar */
+.navbar-custom {
+    background-color: #007bff;
+  }
+  
+  .navbar-custom .navbar-brand {
+    color: #ffffff;
+  }
+  
+  .navbar-custom .nav-link {
+    color: #ffffff;
+  }
+  
