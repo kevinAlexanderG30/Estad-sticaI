@@ -3,5 +3,59 @@
 {% block title %}Guia 2{% endblock %}
 
 {% block content %}
-    <h1>guia2</h1>
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <h1 class="mb-4">Guia #2</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group w-75">
+            <label for="numero">Ingrese los datos:</label>
+            <input type="text" class="form-control" name="input_data" id="numero" placeholder="Ejemplo: 1, 2, 5, 6">
+        </div>
+        <button type="submit" id="submit-button" class="btn btn-primary">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            Calcular
+        </button>
+    </form>
+        <div class="container mt-5">
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Resultado</th>           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Mediana muestral</th>
+                            <td>{{ median_value }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">V.maximo</th>
+                            <td>Esperando..</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">V.minimo</th>
+                            <td >Esperando..</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Rango</th>
+                            <td>Esperando..</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">N° deinterva</th>
+                            <td>Esperando..</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Amplitud</th>
+                            <td>Esperando..</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+    
+    </div>
+</div>
 {% endblock %}
