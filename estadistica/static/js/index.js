@@ -1,5 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const ctx = document.getElementById('myChart');
+    let frecuenciaFortable = []
+
     const excelTable = document.querySelector('#excel-table');
 
     function addRow(data) {
@@ -80,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return cells.map(cell => cell.textContent);
         });
 
-        console.log(dataToSend);
         const formData = new FormData();
         formData.append('DatosEx', dataToSend);
 
@@ -93,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Respuesta del servidor:', data);
 
                 // Seleccionar las celdas de la segunda columna de la primera tabla
                 const secondColumnTds = document.querySelectorAll('.tabla1 tbody tr td:nth-child(2)');
@@ -101,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Actualizar las celdas de la segunda columna con datos
                 contador = 0
                 secondColumnTds.forEach(td => {
-                    console.log(data);
                     td.textContent = data[contador];
                     contador++
                 });
@@ -112,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Actualizar las celdas de la tercera columna con datos
                 contador = 0
                 thirdColumnTds.forEach(td => {
-                    console.log(data);
                     if (contador == 5) {
                         td.textContent = parseFloat(data[contador].toFixed(1));
                         amplitud = parseFloat(data[contador].toFixed(1));
@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function creartabla2(amplitud, menor, intervalos) {
         var table = document.querySelector('.tabla2');
         var tablaExcell2 = table.querySelector('.tabla-excell2');
-        console.log(tablaExcell2)
 
         for (let index = 0; index <= intervalos; index++) {
             var numberOfCells = 10;
@@ -158,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tablaExcell2.appendChild(tableRow);
         }
         relleno(amplitud, menor, intervalos);
+        grafico();
     }
 
     function relleno(amplitud, menor, intervalos) {
@@ -166,6 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const secondColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(2)');
         const threeColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(3)');
         const fourColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(4)');
+        const fiveColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(5)');
+        const sixColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(6)');
+        const sevenColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(7)');
+        const eightColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(8)');
+        const nineColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(9)');
+        const tenColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(10)');
 
         // Primera columna
         var contador = 0;
@@ -212,37 +218,36 @@ document.addEventListener('DOMContentLoaded', () => {
         let arreglo1 = [];
         let arreglo2 = [];
         secondColumnTds.forEach(td => {
-            if(contador == 0){}
-            else{
-            arreglo1.push(td.textContent)
+            if (contador == 0) { }
+            else {
+                arreglo1.push(td.textContent)
             }
             contador++
         });
         contador = 0;
         threeColumnTds.forEach(td => {
-            if(contador == 0){}
+            if (contador == 0) { }
 
-            else{
-            arreglo2.push(td.textContent)
+            else {
+                arreglo2.push(td.textContent)
             }
             contador++
         });
 
         contador = 0;
-        console.log(arreglo1);
-        console.log(arreglo2);
         fourColumnTds.forEach(td => {
-            if( contador == 0){
+            if (contador == 0) {
             }
             else {
-            var division = (parseFloat(arreglo1[contador-1])+parseFloat(arreglo2[contador-1]))/2; 
-            td.textContent = division;
+                var division = (parseFloat(arreglo1[contador - 1]) + parseFloat(arreglo2[contador - 1])) / 2;
+                td.textContent = division;
+               
             }
             contador++
         });
 
+        contador = 0;
         // Quinta Columna
-        
         fetch('http://127.0.0.1:8000/frecuencia/', {
             method: 'POST',
             headers: {
@@ -252,13 +257,150 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Respuesta del servidor:', data);
+                fiveColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        td.textContent = data.frecuenciatotal[contador - 1];
+                        frecuenciaFortable.push(data.frecuenciatotal[contador - 1]);
+                    }
+                    contador++;
+                })
+
+                // sexta Columna
+                let frecuenciaAbFinal = 0
+                contador = 0;
+                sumador = data.frecuenciatotal[0];
+                sumadorMore = data.frecuenciatotal
+                sixColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        frecuenciaAbFinal = sumador
+                        td.textContent = sumador
+                        sumador = sumador + sumadorMore[contador];
+                    }
+                    contador++
+                })
+
+                // Septima Columna
+                contador = 0;
+                sevenColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        td.textContent = data.frecuenciatotal[contador - 1] / data.total
+                    }
+                    contador++;
+                })
+
+                // Octava Columna
+                contador = 0;
+                let arreglo1 = [];
+                sixColumnTds.forEach(td => {
+                    if (contador == 0) { }
+                    else {
+                        arreglo1.push(td.textContent)
+                    }
+                    contador++
+                });
+
+                contador = 0
+                maximo = Math.max(...arreglo1);
+                eightColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        td.textContent = parseInt(arreglo1[contador - 1]) / maximo
+
+                    }
+                    contador++;
+                })
+
+                // Novena Columna
+                let frecuenciaRelativa = [];
+                contador = 0;
+                sevenColumnTds.forEach(td => {
+                    if (contador == 0) { }
+                    else {
+                        frecuenciaRelativa.push(parseFloat(td.textContent))
+                    }
+                    contador++
+
+                })
+
+                contador = 0;
+                nineColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        td.textContent = frecuenciaRelativa[contador - 1] * 100
+                    }
+                    contador++;
+                })
+
+                // Decima Columna
+
+                let frecuenciaRelativaAcomulada = [];
+                contador = 0;
+                eightColumnTds.forEach(td => {
+                    if (contador == 0) { }
+                    else {
+                        frecuenciaRelativaAcomulada.push(parseFloat(td.textContent))
+                    }
+                    contador++
+
+                })
+
+                contador = 0;
+                tenColumnTds.forEach(td => {
+                    if (contador == 0) {
+                    }
+                    else {
+                        td.textContent = frecuenciaRelativaAcomulada[contador - 1] * 100
+                    }
+                    contador++;
+                })
 
             });
-
-
     }
+    
+    function grafico(params) {
+        const fourColumnTds = document.querySelectorAll('.tabla2 tbody tr td:nth-child(4)');
 
+        let arreglo1 = [];
+
+        contador = 0;
+        fourColumnTds.forEach( td => {
+            if (contador == 0){
+            }
+            else { 
+                arreglo1.push(td.textContent)
+            }
+            contador++
+        })
+        
+        console.log(frecuenciaFortable)
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: arreglo1,
+                datasets: [{
+                    label: 'Grafico de Frecuencias',
+                    data: frecuenciaFortable,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 
 });
 
