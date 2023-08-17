@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('DatosEx', dataToSend);
 
-        fetch('http://127.0.0.1:8000/Datos/', {
+        fetch('http://127.0.0.1:8000/Datos/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

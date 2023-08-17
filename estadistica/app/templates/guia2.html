@@ -29,9 +29,67 @@
                 <tbody>
                     <tr>
                         <th scope="row">Mediana muestral</th>
+                        {% if median_value is not None %}
                         <td>{{ median_value }}</td>                    
-                        <td></td>
+                        {% endif %}                          
+                        <td></td>                                                                                              
                     </tr>
+                    <tr>
+                        <th scope="row">Moda muestral</th>
+                        {% if mode_value is not None %}
+                        <th>{{ mode_value }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Varianza muestral</th>
+                        {% if variance_value is not None %}   
+                        <th>{{ variance_value }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>                    
+                    <tr>
+                        <th scope="row">Desviación estándar muestral</th>
+                        {% if stdev_value is not None %} 
+                        <th>{{ stdev_value }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>   
+                    <tr>
+                        <th scope="row">Primer cuartil (Q1)</th>
+                        {% if q1 is not None %}
+                        <th>{{ q1 }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>           
+                    <tr>
+                        <th scope="row">Tercer cuartil (Q3)</th>
+                        {% if q3 is not None %}
+                        <th>{{ q3 }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>                                 
+                    <tr>
+                        <th scope="row">Coeficiente de variación</th>
+                        {% if coef_of_var is not None %}      
+                        <th>{{ coef_of_var }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>          
+                    <tr>
+                        <th scope="row">Media de datos agrupados</th>
+                        {% if mean_grouped  is not None %}      
+                        <th>{{ mean_grouped  }}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>      
+                    <tr>
+                        <th scope="row"></th>
+                        {% if variance_grouped is not None %}                        
+                        <th>{{variance_grouped}}</th>
+                        {% endif %}
+                        <th></th>
+                    </tr>                               
                 </tbody>
             </table>
         </div>

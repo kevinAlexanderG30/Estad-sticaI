@@ -76,6 +76,8 @@ def guia2(request):
         print("Media de datos agrupados:", mean_grouped)
         print("Varianza de datos agrupados:", variance_grouped)
 
+
+
         return render(request, "guia2.html", {
             "mean": mean_value,
             "median_value": median_value,
@@ -88,11 +90,10 @@ def guia2(request):
             "mean_grouped": mean_grouped,
             "variance_grouped": variance_grouped
         })
+        #return Response([mean_value,  median_value, mode_value, 
+         #               variance_value, stdev_value, q1, q3, 
+          #              coef_of_var, mean_grouped, variance_grouped], status=status.HTTP_201_CREATED)    
     return render(request, "guia2.html")
-
-
-
-
 
 # Api
 class FrecuenciaExcel(APIView):
