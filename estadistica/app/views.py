@@ -10,6 +10,7 @@ from numpy import percentile, array, repeat
 import math
 import numpy as np
 
+N_datos = 0
 arreglo = []
 
 def index(request):
@@ -20,22 +21,20 @@ def guia2(request):
         input_data = request.POST.get('input_data') 
         numbers = [int(num) for num in input_data.split(',')]
 
-        # Calcula la media, mediana, moda, varianza, desviación estándar, cuartiles y coeficiente de variación
         if numbers:
             mean_value = mean(numbers)
             median_value = median(numbers)
             try:
                 mode_value = mode(numbers)
             except:
-                mode_value = None  # Manejo si no hay una moda clara
+                mode_value = None
             variance_value = variance(numbers)
             stdev_value = stdev(numbers)
-            q1 = percentile(numbers, 25)  # Primer cuartil (Q1)
-            q3 = percentile(numbers, 75)  # Tercer cuartil (Q3)
-            coef_of_var = (stdev_value / mean_value) * 100  # Coeficiente de variación
+            q1 = percentile(numbers, 25)
+            q3 = percentile(numbers, 75)
+            coef_of_var = (stdev_value / mean_value) * 100
 
-            # Calcula la media y la varianza de datos agrupados
-            grouped_data = {}  # Diccionario para almacenar frecuencias por grupo
+            grouped_data = {}
             for num in numbers:
                 if num in grouped_data:
                     grouped_data[num] += 1
@@ -64,21 +63,19 @@ def guia2(request):
             mean_grouped = None
             variance_grouped = None
 
-        print(numbers)
-        print("Media muestral:", mean_value)
-        print("Mediana muestral:", median_value)
-        print("Moda muestral:", mode_value)
-        print("Varianza muestral:", variance_value)
-        print("Desviación estándar muestral:", stdev_value)
-        print("Primer cuartil (Q1):", q1)
-        print("Tercer cuartil (Q3):", q3)
-        print("Coeficiente de variación:", coef_of_var)
-        print("Media de datos agrupados:", mean_grouped)
-        print("Varianza de datos agrupados:", variance_grouped)
+        mean_valueR = round(mean_value)
+        median_valueR = round(median_value)
+        mode_valueR = round(mode_value)
+        variance_valueR = round(variance_value)
+        stdev_valueR = round(stdev_value)
+        q1R = round(q1)
+        q3R = round(q3)
+        coef_of_varR = round(coef_of_var)
+        mean_groupedR = round(mean_grouped)
+        variance_groupedR = round(variance_grouped)
 
-
-
-        return render(request, "guia2.html", {
+        # Devuelve una respuesta JSON en lugar de renderizar directamente        
+        response_data = {
             "mean": mean_value,
             "median_value": median_value,
             "mode_value": mode_value,
@@ -88,29 +85,45 @@ def guia2(request):
             "q3": q3,
             "coef_of_var": coef_of_var,
             "mean_grouped": mean_grouped,
-            "variance_grouped": variance_grouped
-        })
-        #return Response([mean_value,  median_value, mode_value, 
-         #               variance_value, stdev_value, q1, q3, 
-          #              coef_of_var, mean_grouped, variance_grouped], status=status.HTTP_201_CREATED)    
+            "variance_grouped": variance_grouped,            
+            "meanR": mean_valueR,
+            "median_valueR": median_valueR,
+            "mode_valueR": mode_valueR,
+            "variance_valueR": variance_valueR,
+            "stdev_valueR": stdev_valueR,
+            "q1R": q1R,
+            "q3R": q3R,
+            "coef_of_varR": coef_of_varR,
+            "mean_groupedR": mean_groupedR,
+            "variance_groupedR": variance_groupedR,            
+        }
+
+        return JsonResponse(response_data)
+
+   
     return render(request, "guia2.html")
+
 
 # Api
 class FrecuenciaExcel(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, format=None):
+        datos_float = [[float(item) for item in sublist] for sublist in arreglo[0]]
+
+
         datos1 = []
         datos = request.data
-        print(datos)
         for i in datos:
             datos1.append(float(i))
-
-        # Calcular la frecuencia
-        frecuencia = np.histogram(arreglo, bins=datos1)[0]
-        print(frecuencia)
         
-        return Response("A",status=status.HTTP_201_CREATED)
+     
+        # Calcular la frecuencia
+        frecuencia = np.histogram(datos_float, bins=datos)[0]
+        frecuencia1 = -(N_datos - len(frecuencia))
+        frecuenciat = np.insert(frecuencia, 0, frecuencia1)
+        total = sum(frecuenciat)
+        return Response({"frecuenciatotal": frecuenciat, "total": total},status=status.HTTP_201_CREATED)
 
 
 class DatosExcel(APIView):
@@ -121,11 +134,12 @@ class DatosExcel(APIView):
             'status': 'request was permitted'
         } 
         datos = request.data
+
         flattened_data = [float(item) for sublist in datos for item in sublist]
-        print(flattened_data)
-        arreglo.append(flattened_data)
+        arreglo.append(datos)
         # Numero de datos
         N_datos = len(flattened_data)
+        print(N_datos)
 
         # Numero Mayor
         N_mayor = max(flattened_data)
@@ -140,10 +154,10 @@ class DatosExcel(APIView):
         # N° deinterva
         N_intervalos = 1+3.322 * math.log10(N_datos)
         N_redondeado =   math.ceil(N_intervalos)
-        print(f"{rango_rendondeado} /{N_redondeado}")
+       # print(f"{rango_rendondeado} /{N_redondeado}")
         # Amplitud
         Amplitud = rango_rendondeado/N_redondeado
-        print(Amplitud)
+        #print(Amplitud)
       
         return Response([N_datos,  N_mayor, N_menor
                          , rango, N_intervalos, Amplitud], status=status.HTTP_201_CREATED)

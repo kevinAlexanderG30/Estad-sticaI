@@ -6,19 +6,23 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
     <h1 class="mb-4">Guia #2</h1>
     <form method="post">
-        {% csrf_token %}
-        <div class="form-group w-75">
+        {% csrf_token %}        
+        <div class="form-group w-100">
             <label for="numero">Ingrese los datos:</label>
             <input type="text" class="form-control" name="input_data" id="numero" placeholder="Ejemplo: 1, 2, 5, 6">
-        </div>
-        <button type="submit" id="submit-button" class="btn btn-primary">
-            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-            Calcular
-        </button>
+        </div>            
     </form>
     <div class="container mt-5">
         <div class="row">
-            <table class="tabla1 table table-bordered">
+            <button type="button" id="calculate-button" class="btn btn-primary">Calcular</button>
+        </div>
+    </div>      
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert" id="error-message" style="display: none;"></div>
+    </div>        
+    <div class="container mt-5">
+        <div class="row">
+            <table id="result-table" class="tabla1 table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Parametros</th>
@@ -29,71 +33,53 @@
                 <tbody>
                     <tr>
                         <th scope="row">Mediana muestral</th>
-                        {% if median_value is not None %}
-                        <td>{{ median_value }}</td>                    
-                        {% endif %}                          
-                        <td></td>                                                                                              
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>                                                                                          
                     </tr>
                     <tr>
                         <th scope="row">Moda muestral</th>
-                        {% if mode_value is not None %}
-                        <th>{{ mode_value }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>
                     <tr>
                         <th scope="row">Varianza muestral</th>
-                        {% if variance_value is not None %}   
-                        <th>{{ variance_value }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>                    
                     <tr>
                         <th scope="row">Desviación estándar muestral</th>
-                        {% if stdev_value is not None %} 
-                        <th>{{ stdev_value }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>   
                     <tr>
                         <th scope="row">Primer cuartil (Q1)</th>
-                        {% if q1 is not None %}
-                        <th>{{ q1 }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>           
                     <tr>
                         <th scope="row">Tercer cuartil (Q3)</th>
-                        {% if q3 is not None %}
-                        <th>{{ q3 }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>                                 
                     <tr>
                         <th scope="row">Coeficiente de variación</th>
-                        {% if coef_of_var is not None %}      
-                        <th>{{ coef_of_var }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>          
                     <tr>
                         <th scope="row">Media de datos agrupados</th>
-                        {% if mean_grouped  is not None %}      
-                        <th>{{ mean_grouped  }}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>      
                     <tr>
                         <th scope="row"></th>
-                        {% if variance_grouped is not None %}                        
-                        <th>{{variance_grouped}}</th>
-                        {% endif %}
-                        <th></th>
+                        <td>Esperando..</td>
+                        <td>Esperando..</td>
                     </tr>                               
                 </tbody>
             </table>
         </div>
-    </div>
-            
+    </div>            
 </div>
+
 {% endblock %}

@@ -8,6 +8,9 @@
       {
         "duplicate-id-active": "off"
       }
-    ]
+    ],
+    "no-inline-styles": "off",
+    "meta-charset-utf-8": "off",
+    "meta-viewport": "off"
   }
 }
