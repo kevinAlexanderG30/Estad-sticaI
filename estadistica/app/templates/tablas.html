@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+        {% block title %}tablas{% endblock %}
+
+        {% block content%}
+    <div class="container">
+  
+        <table id="" class=" tabla1 table table table-striped">
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>Intervalos</th>
+                    <th>M. de Clases</th>
+                    <th>frec. Abs</th>
+                    <th>fec. Abs.acom</th>
+                    <th>frec. Relativa</th>
+                    <th>Frec. Relat. Acom</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in table.iterrows %}
+                <tr>
+                    <td>{{row.Numero}}</td>
+                    <td>{{ row.Clase}}</td>
+                    <td>{{ row.Marcasdeclase}}</td>
+                    <td>{{ row.Frecuenciaabsoluta}}</td>
+                    <td>{{ row.Frecuenciaabsolutaacumulada}}</td>
+                    <td>{{ row.Frecuenciarelativa}}</td>
+                    <td>{{ row.Frecuenciarelativaacumulada}}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        {% for key, value in list.items %}
+                        <tr>
+                            <th>{{ key }}</th>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+
+                <table class="table">
+                    <tbody>
+                        {% for key, value in list2.items %}
+                        <tr>
+                            <th>{{ key }}</th>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+
+        <div class="row">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="row">
+            <canvas id="oilChart" width="600" height="400"></canvas>
+        </div>
+      
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+        const threedColumnTds = document.querySelectorAll('.tabla1 tbody tr td:nth-child(3)');
+        const fourdColumnTds = document.querySelectorAll('.tabla1 tbody tr td:nth-child(4)');
+        const sixColumnTds = document.querySelectorAll('.tabla1 tbody tr td:nth-child(6)');
+        console.log(threedColumnTds)
+        console.log(fourdColumnTds)
+        let marca = [];
+        let Frecuencia = [];
+        let relativa = [];
+
+
+        threedColumnTds.forEach(td => {
+            marca.push(td.textContent);
+        })
+
+        fourdColumnTds.forEach(td => {
+            Frecuencia.push(td.textContent);
+        })
+        sixColumnTds.forEach(td => {
+            relativa.push(parseFloat(td.textContent)*100)
+        });
+
+
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: marca,
+                datasets: [{
+                    label: 'Grafico de Frecuencias',
+                    data: Frecuencia,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+        var oilCanvas = document.getElementById("oilChart");
+
+        var oilData = {
+            labels: relativa,
+            datasets: [
+                {
+                    data: relativa,
+                    backgroundColor: [
+                        "#FF6384",
+                        "#63FF84",
+                        "#84FF63",
+                        "#8463FF",
+                        "#6384FF"
+                    ]
+                }]
+        };
+
+        var pieChart = new Chart(oilCanvas, {
+            type: 'pie',
+            data: oilData
+        });
+
+
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+{% endblock %}
